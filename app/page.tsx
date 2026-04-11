@@ -1,65 +1,115 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useState } from "react"
+import { ChevronRight, Monitor, Settings, Shield, Target, Users, Bell, RefreshCw } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import CommandCenterPage from "./command-center/page"
+import TaskNetworkPage from "./task-network/page"
+import BlacklistPage from "./blacklist/page"
+import IntelligencePage from "./intelligence/page"
+import SystemsPage from "./systems/page"
+
+export default function TacticalDashboard() {
+  const [activeSection, setActiveSection] = useState("overview")
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <div
+        className={`${sidebarCollapsed ? "w-16" : "w-70"} bg-neutral-900 border-r border-neutral-700 transition-all duration-300 fixed md:relative z-50 md:z-auto h-full md:h-auto ${!sidebarCollapsed ? "md:block" : ""}`}
+      >
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-8">
+            <div className={`${sidebarCollapsed ? "hidden" : "block"}`}>
+              <h1 className="text-orange-500 font-bold text-lg tracking-wider">TACTICAL OPS</h1>
+              <p className="text-neutral-500 text-xs">v0.1.7 CLASSIFIED BETA</p>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="text-neutral-400 hover:text-orange-500"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <ChevronRight
+                className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${sidebarCollapsed ? "" : "rotate-180"}`}
+              />
+            </Button>
+          </div>
+
+          <nav className="space-y-2">
+            {[
+              { id: "overview", icon: Monitor, label: "COMMAND CENTER" },
+              { id: "tasks", icon: Users, label: "TASK NETWORK" },
+              { id: "blacklist", icon: Target, label: "BLACKLIST" },
+              { id: "intelligence", icon: Shield, label: "INTELLIGENCE" },
+              { id: "systems", icon: Settings, label: "SYSTEMS" },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveSection(item.id)}
+                className={`w-full flex items-center gap-3 p-3 rounded transition-colors ${
+                  activeSection === item.id
+                    ? "bg-orange-500 text-white"
+                    : "text-neutral-400 hover:text-white hover:bg-neutral-800"
+                }`}
+              >
+                <item.icon className="w-5 h-5 md:w-5 md:h-5 sm:w-6 sm:h-6" />
+                {!sidebarCollapsed && <span className="text-sm font-medium">{item.label}</span>}
+              </button>
+            ))}
+          </nav>
+
+          {!sidebarCollapsed && (
+            <div className="mt-8 p-4 bg-neutral-800 border border-neutral-700 rounded">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                <span className="text-xs text-white">SYSTEM ONLINE</span>
+              </div>
+              <div className="text-xs text-neutral-500">
+                <div>UPTIME: 72:14:33</div>
+                <div>AGENTS: 847 ACTIVE</div>
+                <div>MISSIONS: 23 ONGOING</div>
+              </div>
+            </div>
+          )}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      {/* Mobile Overlay */}
+      {!sidebarCollapsed && (
+        <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setSidebarCollapsed(true)} />
+      )}
+
+      {/* Main Content */}
+      <div className={`flex-1 flex flex-col ${!sidebarCollapsed ? "md:ml-0" : ""}`}>
+        {/* Top Toolbar */}
+        <div className="h-16 bg-neutral-800 border-b border-neutral-700 flex items-center justify-between px-6">
+          <div className="flex items-center gap-4">
+            <div className="text-sm text-neutral-400">
+              TACTICAL COMMAND / <span className="text-orange-500">OVERVIEW</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-xs text-neutral-500">LAST UPDATE: 05/06/2025 20:00 UTC</div>
+            <Button variant="ghost" size="icon" className="text-neutral-400 hover:text-orange-500">
+              <Bell className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-neutral-400 hover:text-orange-500">
+              <RefreshCw className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
-      </main>
+
+        {/* Dashboard Content */}
+        <div className="flex-1 overflow-auto">
+          {activeSection === "overview" && <CommandCenterPage />}
+          {activeSection === "tasks" && <TaskNetworkPage />}
+          {activeSection === "blacklist" && <BlacklistPage />}
+          {activeSection === "intelligence" && <IntelligencePage />}
+          {activeSection === "systems" && <SystemsPage />}
+        </div>
+      </div>
     </div>
-  );
+  )
 }
