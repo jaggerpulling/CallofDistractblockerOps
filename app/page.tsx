@@ -72,7 +72,7 @@ export default function TacticalDashboard() {
                   <span className={`text-xs ${
                     enabled ? "text-white" : "text-neutral-400"
                   }`}>
-                    {enabled ? "BLOCKER ACTIVE" : "SYSTEM STANDBY"}
+                    {enabled ? "SYSTEMS ACTIVE" : "SYSTEMS STANDBY"}
                   </span>
                 </div>
                 <div className="text-xs text-neutral-500">

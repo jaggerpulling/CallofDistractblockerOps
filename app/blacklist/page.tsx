@@ -6,78 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Target, MapPin, Clock, Users, AlertTriangle, CheckCircle, XCircle } from "lucide-react"
 
+import { sites, Site } from "@/lib/sites" //mission(site) data structure template import with mock data
+
 export default function BlacklistPage() {
-  const [selectedOperation, setSelectedOperation] = useState(null)
+  const [selectedSite, setSelectedSite] = useState<Site | null>(null)
+  const siteList: Site[] = Array.isArray(sites) ? sites : [] //display empty data if sites is empty
 
-  const operations = [
-    {
-      id: "OP-OMEGA-001",
-      name: "SHADOW PROTOCOL",
-      status: "active",
-      priority: "critical",
-      location: "Eastern Europe",
-      agents: 5,
-      progress: 75,
-      startDate: "2025-06-15",
-      estimatedCompletion: "2025-06-30",
-      description: "Track high-value target in Eastern Europe",
-      objectives: ["Locate target", "Establish surveillance", "Extract intelligence"],
-    },
-    {
-      id: "OP-DELTA-002",
-      name: "GHOST FIRE",
-      status: "planning",
-      priority: "high",
-      location: "Seoul",
-      agents: 3,
-      progress: 25,
-      startDate: "2025-06-20",
-      estimatedCompletion: "2025-07-05",
-      description: "Infiltrate cybercrime network in Seoul",
-      objectives: ["Penetrate network", "Gather evidence", "Identify key players"],
-    },
-    {
-      id: "OP-SIERRA-003",
-      name: "NIGHT STALKER",
-      status: "completed",
-      priority: "medium",
-      location: "Berlin",
-      agents: 2,
-      progress: 100,
-      startDate: "2025-05-28",
-      estimatedCompletion: "2025-06-12",
-      description: "Monitor rogue agent communications in Berlin",
-      objectives: ["Intercept communications", "Decode messages", "Report findings"],
-    },
-    {
-      id: "OP-ALPHA-004",
-      name: "CRIMSON TIDE",
-      status: "active",
-      priority: "high",
-      location: "Cairo",
-      agents: 4,
-      progress: 60,
-      startDate: "2025-06-10",
-      estimatedCompletion: "2025-06-25",
-      description: "Support covert extraction in South America",
-      objectives: ["Secure extraction point", "Neutralize threats", "Extract asset"],
-    },
-    {
-      id: "OP-BRAVO-005",
-      name: "SILENT BLADE",
-      status: "compromised",
-      priority: "critical",
-      location: "Moscow",
-      agents: 6,
-      progress: 40,
-      startDate: "2025-06-05",
-      estimatedCompletion: "2025-06-20",
-      description: "Monitor rogue agent communications in Berlin",
-      objectives: ["Assess compromise", "Extract personnel", "Damage control"],
-    },
-  ]
-
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: Site["status"]) => {
     switch (status) {
       case "active":
         return "bg-white/20 text-white"
@@ -92,7 +27,7 @@ export default function BlacklistPage() {
     }
   }
 
-  const getPriorityColor = (priority) => {
+  const getPriorityColor = (priority: Site["priority"]) => {
     switch (priority) {
       case "critical":
         return "bg-red-500/20 text-red-500"
@@ -107,7 +42,7 @@ export default function BlacklistPage() {
     }
   }
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: Site["status"]) => {
     switch (status) {
       case "active":
         return <Target className="w-4 h-4" />
@@ -131,7 +66,7 @@ export default function BlacklistPage() {
           <p className="text-sm text-neutral-400">Mission planning and execution oversight</p>
         </div>
         <div className="flex gap-2">
-          <Button className="bg-orange-500 hover:bg-orange-600 text-white">New Operation</Button>
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white">New Site</Button>
           <Button className="bg-orange-500 hover:bg-orange-600 text-white">Mission Brief</Button>
         </div>
       </div>
@@ -187,75 +122,81 @@ export default function BlacklistPage() {
         </Card>
       </div>
 
-      {/* Operations List */}
+      {/* Sites List */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        {operations.map((operation) => (
-          <Card
-            key={operation.id}
-            className="bg-neutral-900 border-neutral-700 hover:border-orange-500/50 transition-colors cursor-pointer"
-            onClick={() => setSelectedOperation(operation)}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-sm font-bold text-white tracking-wider">{operation.name}</CardTitle>
-                  <p className="text-xs text-neutral-400 font-mono">{operation.id}</p>
+        {siteList.length > 0 ? (
+          siteList.map((site) => (
+            <Card
+              key={site.id}
+              className="bg-neutral-900 border-neutral-700 hover:border-orange-500/50 transition-colors cursor-pointer"
+              onClick={() => setSelectedSite(site)}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-sm font-bold text-white tracking-wider">{site.name}</CardTitle>
+                    <p className="text-xs text-neutral-400 font-mono">{site.id}</p>
+                  </div>
+                  <div className="flex items-center gap-2">{getStatusIcon(site.status)}</div>
                 </div>
-                <div className="flex items-center gap-2">{getStatusIcon(operation.status)}</div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Badge className={getStatusColor(operation.status)}>{operation.status.toUpperCase()}</Badge>
-                <Badge className={getPriorityColor(operation.priority)}>{operation.priority.toUpperCase()}</Badge>
-              </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                  <Badge className={getStatusColor(site.status)}>{site.status.toUpperCase()}</Badge>
+                  <Badge className={getPriorityColor(site.priority)}>{site.priority.toUpperCase()}</Badge>
+                </div>
 
-              <p className="text-sm text-neutral-300">{operation.description}</p>
+                <p className="text-sm text-neutral-300">{site.description}</p>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-xs text-neutral-400">
-                  <MapPin className="w-3 h-3" />
-                  <span>{operation.location}</span>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-xs text-neutral-400">
+                    <MapPin className="w-3 h-3" />
+                    <span>{site.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-neutral-400">
+                    <Users className="w-3 h-3" />
+                    <span>{site.agents} agents assigned</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-neutral-400">
+                    <Clock className="w-3 h-3" />
+                    <span>Est. completion: {site.estimatedCompletion}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-neutral-400">
-                  <Users className="w-3 h-3" />
-                  <span>{operation.agents} agents assigned</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-neutral-400">
-                  <Clock className="w-3 h-3" />
-                  <span>Est. completion: {operation.estimatedCompletion}</span>
-                </div>
-              </div>
 
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs">
-                  <span className="text-neutral-400">Progress</span>
-                  <span className="text-white font-mono">{operation.progress}%</span>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-neutral-400">Progress</span>
+                    <span className="text-white font-mono">{site.progress}%</span>
+                  </div>
+                  <div className="w-full bg-neutral-800 rounded-full h-2">
+                    <div
+                      className="bg-orange-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${site.progress}%` }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="w-full bg-neutral-800 rounded-full h-2">
-                  <div
-                    className="bg-orange-500 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${operation.progress}%` }}
-                  ></div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full text-center text-neutral-400">
+            No sites available.
+          </div>
+        )}
       </div>
 
       {/* Operation Detail Modal */}
-      {selectedOperation && (
+      {selectedSite && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <Card className="bg-neutral-900 border-neutral-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-xl font-bold text-white tracking-wider">{selectedOperation.name}</CardTitle>
-                <p className="text-sm text-neutral-400 font-mono">{selectedOperation.id}</p>
+                <CardTitle className="text-xl font-bold text-white tracking-wider">{selectedSite.name}</CardTitle>
+                <p className="text-sm text-neutral-400 font-mono">{selectedSite.id}</p>
               </div>
               <Button
                 variant="ghost"
-                onClick={() => setSelectedOperation(null)}
+                onClick={() => setSelectedSite(null)}
                 className="text-neutral-400 hover:text-white"
               >
                 ✕
@@ -267,11 +208,11 @@ export default function BlacklistPage() {
                   <div>
                     <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">OPERATION STATUS</h3>
                     <div className="flex gap-2">
-                      <Badge className={getStatusColor(selectedOperation.status)}>
-                        {selectedOperation.status.toUpperCase()}
+                      <Badge className={getStatusColor(selectedSite.status)}>
+                        {selectedSite.status.toUpperCase()}
                       </Badge>
-                      <Badge className={getPriorityColor(selectedOperation.priority)}>
-                        {selectedOperation.priority.toUpperCase()}
+                      <Badge className={getPriorityColor(selectedSite.priority)}>
+                        {selectedSite.priority.toUpperCase()}
                       </Badge>
                     </div>
                   </div>
@@ -281,19 +222,19 @@ export default function BlacklistPage() {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-neutral-400">Location:</span>
-                        <span className="text-white">{selectedOperation.location}</span>
+                        <span className="text-white">{selectedSite.location}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-neutral-400">Agents:</span>
-                        <span className="text-white font-mono">{selectedOperation.agents}</span>
+                        <span className="text-white font-mono">{selectedSite.agents}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-neutral-400">Start Date:</span>
-                        <span className="text-white font-mono">{selectedOperation.startDate}</span>
+                        <span className="text-white font-mono">{selectedSite.startDate}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-neutral-400">Est. Completion:</span>
-                        <span className="text-white font-mono">{selectedOperation.estimatedCompletion}</span>
+                        <span className="text-white font-mono">{selectedSite.estimatedCompletion}</span>
                       </div>
                     </div>
                   </div>
@@ -305,12 +246,12 @@ export default function BlacklistPage() {
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-neutral-400">Completion</span>
-                        <span className="text-white font-mono">{selectedOperation.progress}%</span>
+                        <span className="text-white font-mono">{selectedSite.progress}%</span>
                       </div>
                       <div className="w-full bg-neutral-800 rounded-full h-3">
                         <div
                           className="bg-orange-500 h-3 rounded-full transition-all duration-300"
-                          style={{ width: `${selectedOperation.progress}%` }}
+                          style={{ width: `${selectedSite.progress}%` }}
                         ></div>
                       </div>
                     </div>
@@ -319,7 +260,7 @@ export default function BlacklistPage() {
                   <div>
                     <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">OBJECTIVES</h3>
                     <div className="space-y-2">
-                      {selectedOperation.objectives.map((objective, index) => (
+                      {selectedSite.objectives.map((objective, index) => (
                         <div key={index} className="flex items-center gap-2 text-sm">
                           <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                           <span className="text-neutral-300">{objective}</span>
@@ -332,7 +273,7 @@ export default function BlacklistPage() {
 
               <div>
                 <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">DESCRIPTION</h3>
-                <p className="text-sm text-neutral-300">{selectedOperation.description}</p>
+                <p className="text-sm text-neutral-300">{selectedSite.description}</p>
               </div>
 
               <div className="flex gap-2 pt-4 border-t border-neutral-700">
