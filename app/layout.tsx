@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist_Mono as GeistMono } from "next/font/google"
 import "./globals.css"
+import { BlockerProvider } from "@/app/context/BlockerContext"
 
 const geistMono = GeistMono({ subsets: ["latin"] })
 
@@ -18,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${geistMono.className} bg-black text-white antialiased`}>{children}</body>
+      <body className={`${geistMono.className} bg-black text-white antialiased`}>
+        <BlockerProvider>{children}</BlockerProvider>
+        </body>
     </html>
   )
 }
