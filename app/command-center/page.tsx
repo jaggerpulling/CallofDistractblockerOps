@@ -188,12 +188,15 @@ export default function CommandCenterPage() {
               </div>
               <div className="text-orange-500">{"> CH#2 | 1231.9082464.500...xR3"}</div>
               <div className={`transition-colors duration-300 ${enabled ? "text-orange-500" : "text-white"}`}>
-                {enabled ? "> NETWORK LOCKED" : "> KEY LOCKED"}
+                {enabled ? "> NETWORK LOCKED" : "> NETWORK FREE"}
               </div>
               <div className="text-neutral-400">
                 {enabled
                   ? '> MSG >> "...blocker engaged... all targets neutralized"'
                   : '> MSG >> "...mission override initiated... awaiting delta node clearance"'}
+              </div>
+              <div className="text-neutral-400">
+                {">> Time Toggle or Task Mode"}
               </div>
             </div>
           </CardContent>
