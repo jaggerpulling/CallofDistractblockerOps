@@ -1,37 +1,35 @@
+from block import *
+
+group_name = "Default"
+
 def header():
     print("Welcome to the Distraction Blocker CLI Demo!")
 
-def block():
-
-def view_blocked_items():
-    for item in blocklist:
-        print(item)
+    
 
 def main():
     header()
-    choice = input(f"Select an option: ")
     print("1. Enable block")
-    print("3. View blocked items")
-    print("4. Exit")
+    print("3. add Items")
+    print("4. Add group")
+    print("9. Exit")
     while True:
+        choice = input(f"Select an option: ")
         if choice == "1":
+            set_group_enabled(group_name, True)
             print("Block enabled.")
-        elif choice == "3":
-            print("Enter 1 to add a new item, or 2 to remove an item.")
-            subchoice = input("Enter your choice: ")
-            if subchoice == "1":
-                item = input("Enter the item to block: ")
-                blocklist.append(item)
-                print(f"{item} added to blocklist.")
-            elif subchoice == "2":
-                item = input("Enter the item to unblock: ")
-                if item in blocklist:
-                    blocklist.remove(item)
-                    print(f"{item} removed from blocklist.")
-                else:
-                    print(f"{item} is not in the blocklist.")
-
         elif choice == "4":
+            create_group("API Group", "Demo created with CLI")
+        elif choice == "3":
+            item = input("Enter the item to block: ")
+            blocklist_add(item, group_name, comment=None)
+            print(f"{item} added to blocklist.")
+        elif choice == "5":
+            status = get_blocking_status(group_name)
+            print(f"Blocking status: {'Enabled' if status else 'Disabled'}")
+        elif choice == "9":
             print("Exiting...")
         else:
             print("Invalid option.")
+
+main()

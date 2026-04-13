@@ -1,7 +1,7 @@
 import requests
 
 BASE_URL = "http://192.168.86.26/api"
-PASSWORD = ""
+PASSWORD = "hJoKCXwu"
 
 # login and get session ID
 def start_session():
@@ -16,27 +16,26 @@ def start_session():
 sid = start_session()
 headers = {"X-FTL-SID": sid}
 
-
-
-
 """
 Create Group with custom NAME & DESCRIPTION
+    -pass strings!
 """
 def create_group(name, description):
-    res = requests.get(f"{BASE_URL}/groups", headers=headers)
+    res = requests.get(f"{BASE_URL}/groups/", headers=headers)
     data = res.json()
-    current_groups = [group["name"] for group in data["groups"]]
+    current_groups = [group["name"].lower() for group in data["groups"]]
 
-    if name.lower() in current_groups.lower(): #check if group exists
+    if name.lower() in current_groups:
         print("invalid, group already exists")
     else:
-        res = requests.post(f"{BASE_URL}/groups{name}",
-        json={"name": name, "enabled": False, "comment": (f"API GROUP: {description}")},
-        headers=headers)
-        if res.status_code == 200:
+        res = requests.post(f"{BASE_URL}/groups",
+            json={"name": name, "enabled": False, "comment": f"API GROUP: {description}"},
+            headers=headers
+        )
+        if res.status_code == 201:
             print("group created!")
         else:
-            print("bad", res.status_code)
+            print("bad", res.status_code, res.text)
 
 def get_group_id(name):
     res = requests.get(f"{BASE_URL}/groups/", headers=headers)
@@ -48,15 +47,18 @@ def get_group_id(name):
 
 def blocklist_add(domain, group_name, comment=None):
     group_id = get_group_id(group_name)
-    res = requests.post(f"{BASE_URL}/domains/deny/exact",
+    wildcard = f"(^|\\.){domain}$"
+    res = requests.post(f"{BASE_URL}/domains/deny/regex",
         json={
-            "domain": domain,
+            "domain": wildcard,
             "comment": comment,
             "groups": [group_id],
             "enabled": True
         },
         headers=headers
     )
+    # Update Gravity so changes persist
+    requests.post(f"{BASE_URL}/action/gravity", headers=headers)
     return res.json()
 
 def get_blocking_status(group_name):
