@@ -3,6 +3,15 @@ import requests
 BASE_URL = "http://192.168.86.26/api"
 PASSWORD = "hJoKCXwu"
 
+HOST_OS = "windows"
+
+#FOR WINDOWS
+import subprocess
+
+def flush_dns():
+    subprocess.run(["ipconfig", "/flushdns"])
+
+
 # login and get session ID
 def start_session():
     res = requests.post(f"{BASE_URL}/auth",
@@ -13,6 +22,7 @@ def start_session():
     data = res.json()
     return data["session"]["sid"]
     
+#start session on file import    
 sid = start_session()
 headers = {"X-FTL-SID": sid}
 
@@ -20,6 +30,8 @@ headers = {"X-FTL-SID": sid}
 Create Group with custom NAME & DESCRIPTION
     -pass strings!
 """
+
+# NEW GROUPS MUST BE ADDED TO CLIENT IN PIHOLE OR ELSE THEY WONT WORK
 def create_group(name, description):
     res = requests.get(f"{BASE_URL}/groups/", headers=headers)
     data = res.json()
@@ -71,7 +83,12 @@ def set_group_enabled(group_name, enabled: bool):
         json={"enabled": enabled},
         headers=headers
     )
+    #flush dns
+    if HOST_OS == "windows":
+        subprocess.run(["ipconfig", "/flushdns"])
     return res.json()
+
+
 
 
 
