@@ -64,7 +64,9 @@ export default function TacticalDashboard() {
 
             {/* Sidebar System Status */}
             {!sidebarCollapsed && (
-              <div className="mt-8 p-4 bg-neutral-800 border border-neutral-700 rounded">
+              <div className={`mt-8 p-4 bg-neutral-800 border rounded transition-colors duration-300 ${
+                  enabled ? "border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.1)]" : "border-neutral-700"
+                }`}>
                 <div className="flex items-center gap-2 mb-2">
                   <div className={`w-2 h-2 rounded-full animate-pulse ${
                     enabled ? "bg-green-500" : "bg-neutral-500"

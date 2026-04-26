@@ -11,66 +11,55 @@ export default function IntelligencePage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedReport, setSelectedReport] = useState(null)
 
+  // Context-relevant data ready for API mapping
   const reports = [
     {
-      id: "INT-2025-001",
-      title: "CYBERCRIME NETWORK ANALYSIS",
-      classification: "TOP SECRET",
-      source: "SIGINT",
-      location: "Eastern Europe",
-      date: "2025-06-17",
+      id: "DNS-BLOCK-771",
+      title: "DISTRACTION INTERCEPTED: YOUTUBE.COM",
+      classification: "TOP SECRET", // Using your original naming convention
+      source: "PI-HOLE",
+      location: "Local Network",
+      date: "2026-06-17",
       status: "verified",
       threat: "high",
-      summary: "Detailed analysis of emerging cybercrime syndicate operating across multiple jurisdictions",
-      tags: ["cybercrime", "international", "financial"],
+      summary: "Automatic block triggered during focus session. 14 unauthorized requests neutralized from workstation-01.",
+      tags: ["network", "blocklist", "streaming"],
     },
     {
-      id: "INT-2025-002",
-      title: "ROGUE AGENT COMMUNICATIONS",
+      id: "TASK-DONE-402",
+      title: "MISSION COMPLETE: PROJECT NEBULA",
       classification: "SECRET",
-      source: "HUMINT",
-      location: "Berlin",
-      date: "2025-06-16",
-      status: "pending",
-      threat: "critical",
-      summary: "Intercepted communications suggesting potential security breach in European operations",
-      tags: ["internal", "security", "communications"],
+      source: "TODOIST",
+      location: "Work Terminal",
+      date: "2026-06-16",
+      status: "active",
+      threat: "low",
+      summary: "All high-priority objectives neutralized. Session sync successful. Productivity yield at 94%.",
+      tags: ["todoist", "success", "milestone"],
     },
     {
-      id: "INT-2025-003",
-      title: "ARMS TRAFFICKING ROUTES",
+      id: "LOG-OVERRIDE-04",
+      title: "BYPASS ATTEMPT: REDDIT.COM",
       classification: "CONFIDENTIAL",
       source: "OSINT",
-      location: "Middle East",
-      date: "2025-06-15",
+      location: "Mobile Device",
+      date: "2026-06-15",
+      status: "pending",
+      threat: "critical",
+      summary: "Manual attempt to modify local hosts file detected. Network integrity maintained via primary gateway.",
+      tags: ["security", "bypass", "social-media"],
+    },
+    {
+      id: "INTEL-WEEKLY-24",
+      title: "WEEKLY YIELD ANALYSIS: WEEK 24",
+      classification: "TOP SECRET",
+      source: "ANALYTICS",
+      location: "System Aggregate",
+      date: "2026-06-14",
       status: "verified",
       threat: "medium",
-      summary: "Updated intelligence on weapons smuggling corridors through Mediterranean region",
-      tags: ["trafficking", "weapons", "maritime"],
-    },
-    {
-      id: "INT-2025-004",
-      title: "TERRORIST CELL SURVEILLANCE",
-      classification: "TOP SECRET",
-      source: "HUMINT",
-      location: "North Africa",
-      date: "2025-06-14",
-      status: "active",
-      threat: "critical",
-      summary: "Ongoing surveillance of suspected terrorist cell planning coordinated attacks",
-      tags: ["terrorism", "surveillance", "coordinated"],
-    },
-    {
-      id: "INT-2025-005",
-      title: "DIPLOMATIC INTELLIGENCE BRIEF",
-      classification: "SECRET",
-      source: "DIPLOMATIC",
-      location: "Asia Pacific",
-      date: "2025-06-13",
-      status: "verified",
-      threat: "low",
-      summary: "Political developments affecting regional security and operational considerations",
-      tags: ["diplomatic", "political", "regional"],
+      summary: "Comparative analysis of focus hours vs. distraction attempts. Identifying fatigue patterns at 15:00 daily.",
+      tags: ["analytics", "trends", "performance"],
     },
   ]
 
@@ -127,11 +116,11 @@ export default function IntelligencePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-wider">INTELLIGENCE CENTER</h1>
-          <p className="text-sm text-neutral-400">Classified reports and threat analysis</p>
+          <h1 className="text-2xl font-bold text-white tracking-wider uppercase">Intelligence Center</h1>
+          <p className="text-sm text-neutral-400">Classified activity logs and productivity intercepts</p>
         </div>
         <div className="flex gap-2">
-          <Button className="bg-orange-500 hover:bg-orange-600 text-white">New Report</Button>
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white">Manual Entry</Button>
           <Button className="bg-orange-500 hover:bg-orange-600 text-white">
             <Filter className="w-4 h-4 mr-2" />
             Filter
@@ -146,7 +135,7 @@ export default function IntelligencePage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
               <Input
-                placeholder="Search intelligence reports..."
+                placeholder="Search activity logs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
@@ -159,8 +148,8 @@ export default function IntelligencePage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-neutral-400 tracking-wider">TOTAL REPORTS</p>
-                <p className="text-2xl font-bold text-white font-mono">1,247</p>
+                <p className="text-xs text-neutral-400 tracking-wider">TOTAL LOGS</p>
+                <p className="text-2xl font-bold text-white font-mono">14,209</p>
               </div>
               <FileText className="w-8 h-8 text-white" />
             </div>
@@ -171,8 +160,8 @@ export default function IntelligencePage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-neutral-400 tracking-wider">CRITICAL THREATS</p>
-                <p className="text-2xl font-bold text-red-500 font-mono">12</p>
+                <p className="text-xs text-neutral-400 tracking-wider">THREATS BLOCKED</p>
+                <p className="text-2xl font-bold text-red-500 font-mono">842</p>
               </div>
               <AlertTriangle className="w-8 h-8 text-red-500" />
             </div>
@@ -183,8 +172,8 @@ export default function IntelligencePage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-neutral-400 tracking-wider">ACTIVE SOURCES</p>
-                <p className="text-2xl font-bold text-white font-mono">89</p>
+                <p className="text-xs text-neutral-400 tracking-wider">ACTIVE NODES</p>
+                <p className="text-2xl font-bold text-white font-mono">03</p>
               </div>
               <Globe className="w-8 h-8 text-white" />
             </div>
@@ -195,7 +184,7 @@ export default function IntelligencePage() {
       {/* Intelligence Reports */}
       <Card className="bg-neutral-900 border-neutral-700">
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-neutral-300 tracking-wider">INTELLIGENCE REPORTS</CardTitle>
+          <CardTitle className="text-sm font-medium text-neutral-300 tracking-wider uppercase">Intercepted Activity</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -210,7 +199,7 @@ export default function IntelligencePage() {
                     <div className="flex items-start gap-3">
                       <FileText className="w-5 h-5 text-neutral-400 mt-0.5" />
                       <div className="flex-1">
-                        <h3 className="text-sm font-bold text-white tracking-wider">{report.title}</h3>
+                        <h3 className="text-sm font-bold text-white tracking-wider uppercase">{report.title}</h3>
                         <p className="text-xs text-neutral-400 font-mono">{report.id}</p>
                       </div>
                     </div>
@@ -258,7 +247,7 @@ export default function IntelligencePage() {
           <Card className="bg-neutral-900 border-neutral-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-xl font-bold text-white tracking-wider">{selectedReport.title}</CardTitle>
+                <CardTitle className="text-xl font-bold text-white tracking-wider uppercase">{selectedReport.title}</CardTitle>
                 <p className="text-sm text-neutral-400 font-mono">{selectedReport.id}</p>
               </div>
               <Button
@@ -273,7 +262,7 @@ export default function IntelligencePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">CLASSIFICATION</h3>
+                    <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">RISK LEVEL</h3>
                     <div className="flex gap-2">
                       <Badge className={getClassificationColor(selectedReport.classification)}>
                         {selectedReport.classification}
@@ -285,22 +274,22 @@ export default function IntelligencePage() {
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">SOURCE DETAILS</h3>
+                    <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">RELAY DETAILS</h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-neutral-400">Source Type:</span>
+                        <span className="text-neutral-400">Source:</span>
                         <span className="text-white font-mono">{selectedReport.source}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-neutral-400">Location:</span>
+                        <span className="text-neutral-400">Node Location:</span>
                         <span className="text-white">{selectedReport.location}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-neutral-400">Date:</span>
+                        <span className="text-neutral-400">Timestamp:</span>
                         <span className="text-white font-mono">{selectedReport.date}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-neutral-400">Status:</span>
+                        <span className="text-neutral-400">Current Status:</span>
                         <Badge className={getStatusColor(selectedReport.status)}>
                           {selectedReport.status.toUpperCase()}
                         </Badge>
@@ -311,7 +300,7 @@ export default function IntelligencePage() {
 
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">TAGS</h3>
+                    <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">ATTRIBUTES</h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedReport.tags.map((tag) => (
                         <Badge key={tag} className="bg-neutral-800 text-neutral-300">
@@ -322,10 +311,10 @@ export default function IntelligencePage() {
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">THREAT ASSESSMENT</h3>
+                    <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">DATA ASSESSMENT</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-neutral-400">Threat Level</span>
+                        <span className="text-neutral-400">System Priority</span>
                         <Badge className={getThreatColor(selectedReport.threat)}>
                           {selectedReport.threat.toUpperCase()}
                         </Badge>
@@ -349,27 +338,27 @@ export default function IntelligencePage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">EXECUTIVE SUMMARY</h3>
+                <h3 className="text-sm font-medium text-neutral-300 tracking-wider mb-2">ANALYTICS SUMMARY</h3>
                 <p className="text-sm text-neutral-300 leading-relaxed">{selectedReport.summary}</p>
               </div>
 
               <div className="flex gap-2 pt-4 border-t border-neutral-700">
                 <Button className="bg-orange-500 hover:bg-orange-600 text-white">
                   <Eye className="w-4 h-4 mr-2" />
-                  View Full Report
+                  View Log Details
                 </Button>
                 <Button
                   variant="outline"
                   className="border-neutral-700 text-neutral-400 hover:bg-neutral-800 hover:text-neutral-300 bg-transparent"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  Download
+                  Export CSV
                 </Button>
                 <Button
                   variant="outline"
                   className="border-neutral-700 text-neutral-400 hover:bg-neutral-800 hover:text-neutral-300 bg-transparent"
                 >
-                  Share Intel
+                  Archive Data
                 </Button>
               </div>
             </CardContent>

@@ -54,7 +54,7 @@ export const sites: Site[] = [
 },
 {
   id: "SITE-004",
-  name: "TWITTER.COM",
+  name: "X.COM",
   status: "planning",
   priority: "high",
   location: "Microblog Social Platform",
